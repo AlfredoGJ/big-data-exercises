@@ -96,17 +96,13 @@ public class MovieRecommender {
         GenericUserPreferenceArray preferencesArray = (GenericUserPreferenceArray) usersPreferences.get(longUserID);
         ArrayList preferencesList = new ArrayList();
 
-        // Checking if there was previous preferences for this user
         if (preferencesArray != null) {
-            // Move the preferences from the array to a list
             for (Integer i = 0; i < preferencesArray.length(); i++)
                 preferencesList.add(preferencesArray.get(i));
         }
 
-        // Add the new preference to the list
         preferencesList.add(new GenericPreference(longUserID, longProductID, score));
 
-        // Get preferences back to the array inside the FastByIDMap
         usersPreferences.put(longUserID, new GenericUserPreferenceArray(preferencesList));
 
     }
