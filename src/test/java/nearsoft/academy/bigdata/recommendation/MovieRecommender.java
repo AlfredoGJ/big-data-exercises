@@ -83,6 +83,7 @@ public class MovieRecommender {
     }
 
     void addPreference(String userID, String productID, float score) {
+        
         reviewCount++;
         if (!userIDs.containsKey(userID))
             userIDs.put(userID, ++userCount);
@@ -93,19 +94,37 @@ public class MovieRecommender {
         Long longUserID = userIDs.get(userID);
         Long longProductID = productIDsBi.get(productID);
 
-        GenericUserPreferenceArray preferencesArray = (GenericUserPreferenceArray) usersPreferences.get(longUserID);
-        ArrayList preferencesList = new ArrayList();
 
-        if (preferencesArray != null) {
-            for (Integer i = 0; i < preferencesArray.length(); i++)
-                preferencesList.add(preferencesArray.get(i));
-        }
+        addPreferenceToUser((GenericUserPreferenceArray) usersPreferences.get(longUserID),new GenericPreference(longUserID, longProductID, score));
 
-        preferencesList.add(new GenericPreference(longUserID, longProductID, score));
+        // GenericUserPreferenceArray preferencesArray = (GenericUserPreferenceArray) usersPreferences.get(longUserID);
+        // ArrayList preferencesList = new ArrayList();
 
-        usersPreferences.put(longUserID, new GenericUserPreferenceArray(preferencesList));
+        // if (preferencesArray != null) {
+        //     for (Integer i = 0; i < preferencesArray.length(); i++)
+        //         preferencesList.add(preferencesArray.get(i));
+        // }
+
+        // preferencesList.add(new GenericPreference(longUserID, longProductID, score));
+
+        // usersPreferences.put(longUserID, new GenericUserPreferenceArray(preferencesList));
 
     }
+    void addPreferenceToUser(GenericUserPreferenceArray existentPreferences, GenericPreference newPreference){
+
+        ArrayList preferencesList = new ArrayList();
+
+        if (existentPreferences != null) {
+            for (Integer i = 0; i < existentPreferences.length(); i++)
+                preferencesList.add(existentPreferences.get(i));
+        }
+
+        preferencesList.add(newPreference);
+
+        usersPreferences.put(newPreference.getUserID(), new GenericUserPreferenceArray(preferencesList));
+
+    }
+
 
     void buildRecomender() throws TasteException {
         model = new GenericDataModel(usersPreferences);
