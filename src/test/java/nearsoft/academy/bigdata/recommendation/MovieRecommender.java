@@ -55,10 +55,8 @@ public class MovieRecommender {
         String userID = "";
         Float score = 0.0f;
 
-        BufferedReader reader;
-
         try {
-            reader = new BufferedReader(new FileReader(filePath));
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line = reader.readLine();
             while (line != null) {
 
@@ -82,7 +80,7 @@ public class MovieRecommender {
         return null;
     }
 
-    void addPreference(String userID, String productID, float score) {
+    private void addPreference(String userID, String productID, float score) {
 
         reviewCount++;
         if (!userIDs.containsKey(userID))
@@ -94,13 +92,10 @@ public class MovieRecommender {
         Long longUserID = userIDs.get(userID);
         Long longProductID = productIDsBi.get(productID);
 
-
         addPreferenceToUser((GenericUserPreferenceArray) usersPreferences.get(longUserID),new GenericPreference(longUserID, longProductID, score));
 
-        
-
     }
-    void addPreferenceToUser(GenericUserPreferenceArray existentPreferences, GenericPreference newPreference){
+    private void addPreferenceToUser(GenericUserPreferenceArray existentPreferences, GenericPreference newPreference){
 
         ArrayList preferencesList = new ArrayList();
 
@@ -116,7 +111,7 @@ public class MovieRecommender {
     }
 
 
-    void buildRecomender() throws TasteException {
+    private void buildRecomender() throws TasteException {
         model = new GenericDataModel(usersPreferences);
         
             UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
@@ -137,7 +132,7 @@ public class MovieRecommender {
         return model.getNumUsers();
     }
 
-    List<String> getRecommendationsForUser(String user) throws TasteException {
+    public List<String> getRecommendationsForUser(String user) throws TasteException {
         
         List<String> result = new ArrayList<String>();
         long longUserID = userIDs.get(user);
